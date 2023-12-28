@@ -6,10 +6,9 @@ import (
 	"jcrose-cmdb/internal/model"
 	"jcrose-cmdb/internal/service"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/klog/v2"
-
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
+	"k8s.io/klog/v2"
 )
 
 func initClientSet() (*kubernetes.Clientset, error) {
@@ -48,7 +47,9 @@ func (s *sK8sNode) K8sNodeList(ctx context.Context, req *api.K8sNodeListReq) ([]
 	var k8snodeList []*model.K8sNodeListOutput
 	for _, valus := range nodeList.Items {
 		node.Name = valus.Name
-		node.Status = valus.Status.String()
+		for _, values := range valus.Status.Conditions {
+			node.Status = string(values.Type)
+		}
 		node.Version = valus.Status.NodeInfo.KubeletVersion
 		node.OsImage = valus.Status.NodeInfo.OSImage
 		node.KernelVersion = valus.Status.NodeInfo.KernelVersion
