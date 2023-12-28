@@ -1,6 +1,8 @@
 package main
 
 import (
+	_ "jcrose-cmdb/internal/logic"
+
 	_ "jcrose-cmdb/internal/packed"
 
 	"github.com/gogf/gf/v2/os/gctx"
