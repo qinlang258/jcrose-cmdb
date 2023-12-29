@@ -5,6 +5,7 @@ import (
 	"jcrose-cmdb/api"
 	"jcrose-cmdb/internal/model"
 	"jcrose-cmdb/internal/service"
+
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
@@ -58,4 +59,17 @@ func (s *sK8sNode) K8sNodeList(ctx context.Context, req *api.K8sNodeListReq) ([]
 
 	k8snodeList = append(k8snodeList, &node)
 	return k8snodeList, err
+}
+
+func (s *sK8sNode) K8sNodeDescribe(ctx context.Context, req *api.K8sNodeDescribeReq) ([]*model.K8sNodeDescribeOutput, error) {
+	nodeList, err := s.k8sClient.CoreV1().Nodes().List(ctx, metav1.ListOptions{})
+
+	if err != nil {
+		klog.Error(ctx, err)
+	}
+
+	for _, values := range nodeList.Items {
+
+	}
+
 }
